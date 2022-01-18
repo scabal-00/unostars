@@ -1,17 +1,21 @@
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
 import Image from "next/image";
 
-import { AppBar, Toolbar, Typography, IconButton, Avatar } from "@mui/material";
-import { styled, alpha } from "@mui/material/styles";
+import { AppBar, Toolbar, IconButton, Avatar } from "@mui/material";
+import { styled } from "@mui/material/styles";
 import MenuIcon from "@mui/icons-material/Menu";
 
+import { Sidebar } from ".";
+
 const Navbar = () => {
+  const [openSidebar, setOpenSidebar] = useState(false);
+
   return (
     <Fragment>
       <SAppBar position="static">
         <SToolbar>
           <Wrapper>
-            <IconButton>
+            <IconButton onClick={() => setOpenSidebar(!openSidebar)}>
               <MenuIcon />
             </IconButton>
             <Image
@@ -26,6 +30,8 @@ const Navbar = () => {
           </IconButton>
         </SToolbar>
       </SAppBar>
+
+      <Sidebar open={openSidebar} onClose={() => setOpenSidebar(false)} />
     </Fragment>
   );
 };
