@@ -1,3 +1,5 @@
+import { useRouter } from "next/router";
+
 import {
   Typography,
   Card,
@@ -7,10 +9,16 @@ import {
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 
-const QuizzItem = () => {
+const QuizzItem = (props) => {
+  const router = useRouter();
+
+  const goToQuizz = (id) => {
+    router.push(`/quizz/${id}`);
+  };
+
   return (
     <SCard>
-      <CardActionArea>
+      <CardActionArea onClick={goToQuizz.bind(null, props.quizzId)}>
         <CardMedia
           component="img"
           height="140"

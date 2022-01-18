@@ -8,8 +8,8 @@ const QuizzList = () => {
   return (
     <Fragment>
       <Row>
-        {[0, 0, 0, 0, 0, 0, 0].map(() => (
-          <QuizzItem />
+        {[0, 1, 2, 3, 4, 5, 6].map((quizz) => (
+          <QuizzItem key={`${quizz}-${quizz}`} quizzId={quizz} />
         ))}
       </Row>
     </Fragment>
