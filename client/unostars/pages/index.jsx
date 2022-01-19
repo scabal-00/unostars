@@ -18,7 +18,7 @@ export default function Home() {
         <Navbar />
         <Container maxWidth="xl" sx={{ marginTop: "1.5rem" }}>
           <Grid container>
-            <Grid item xs={12}>
+            <Grid item xs={12} sx={{ marginTop: "1rem" }}>
               <Typography>Current Assesments</Typography>
             </Grid>
             <Grid item xs={12}>
@@ -26,7 +26,7 @@ export default function Home() {
             </Grid>
           </Grid>
           <Grid container>
-            <Grid item xs={12}>
+            <Grid item xs={12} sx={{ marginTop: "1rem" }}>
               <Typography>Available Assesments</Typography>
             </Grid>
             <Grid item xs={12}>
