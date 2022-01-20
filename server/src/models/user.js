@@ -1,21 +1,41 @@
-import mongoose from "mongoose";
-const Schema = mongoose.Schema;
+import { Schema, model } from "mongoose";
 
-const UserScheme = new Schema({
-  name: String,
-  lastname: String,
-  email: {
-    type: String,
-    unique: true,
+const userSchema = new Schema(
+  {
+    userId: {
+      type: String,
+      unique: true,
+    },
+    name: {
+      type: String,
+      required: true,
+    },
+    age: Number,
+    gender: String,
+    email: {
+      type: String,
+      required: true,
+      unique: true,
+      match: [
+        /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
+        "Provide a valid email",
+      ],
+    },
+    photo: String,
+    role: {
+      type: String,
+      required: true,
+    },
+    level: {
+      type: String,
+      required: true,
+    },
+    isActive: Boolean,
   },
-  phone: {
-    type: String,
-    unique: true,
-  },
-  phoneStatus: Number,
-  password: String,
-  role: String,
-  active: Boolean,
-});
+  {
+    timestamps: true,
+    versionKey: false,
+  }
+);
 
-module.exports = mongoose.model("User", UserScheme);
+module.exports = model("User", userSchema);
