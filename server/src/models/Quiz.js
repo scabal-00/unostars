@@ -1,48 +1,22 @@
 import { Schema, model } from "mongoose";
 
-const quizzesSchema = new Schema(
+const quizSchema = new Schema(
   {
-    id: String,
-    title: String,
+    title: { type: String, required: true },
     dsc: String,
+    isActive: { type: Boolean, default: true },
     photo: String,
-    isActive: Boolean,
-    globalTopic: 
-    globalTopic: {
-      id: String,
-      title: String,
-      dsc: String,
-      topics: [
-        {
-          id: String,
-          title: String,
-          dsc: String,
-          isActive: Boolean,
-          questions: [
-            {
-              id: Number,
-              title: String,
-              dsc: String,
-              isActive: Boolean,
-              isSelected: Boolean,
-              isPrivate: Boolean,
-              type: {
-                id: String,
-                name: String,
-                dsc: String,
-                options: [
-                  {
-                    id: String,
-                    dsc: String,
-                    isAnswer: Boolean,
-                  },
-                ],
-              },
-            },
-          ],
-        },
-      ],
+    gTopic: {
+      type: String,
     },
+    topics: [
+      {
+        topicId: {
+          type: String,
+        },
+        selectedQuestionsId: [String],
+      },
+    ],
   },
   {
     timestamps: true,
@@ -50,4 +24,4 @@ const quizzesSchema = new Schema(
   }
 );
 
-module.exports = model("Quizzes", quizzesSchema);
+module.exports = model("Quiz", quizSchema);

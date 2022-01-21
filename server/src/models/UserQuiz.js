@@ -2,17 +2,35 @@ import { Schema, model } from "mongoose";
 
 const userQuizSchema = new Schema(
   {
-    title: {
+    title: { type: String, required: true },
+    dsc: String,
+    isActive: { type: Boolean, default: true },
+    userId: {
       type: String,
       required: true,
     },
-    dsc: String,
-    isActive: {
-      type: Boolean,
-      required: true,
+    remitterId: {
+      type: String,
     },
-    userId: { type: Schema.ObjectId, ref: "User" },
-    remitterId: { type: Schema.ObjectId, ref: "User" },
+    quizId: {
+      type: String,
+    },
+    /* userAnswers: {
+      selectedAnswers: [
+        {
+          questionId: String,
+          correctAnswer: String,
+          userAnswer: String,
+          score: { type: Number, default: 0 },
+        },
+      ],
+      countAnswers: {
+        countCorrectAnswers: { type: Number, default: 0 },
+        countWrongAnswers: { type: Number, default: 0 },
+        totalQuestions: { type: Number, default: 0 },
+      },
+      totalScore: { type: Number, default: 0 },
+    }, */
   },
   {
     timestamps: true,

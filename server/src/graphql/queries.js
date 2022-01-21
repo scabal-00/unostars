@@ -1,6 +1,6 @@
-import { GraphQLList, GraphQLString, GraphQLID } from "graphql";
-import { UserType } from "./types";
-import { User } from "../models";
+import { GraphQLList, GraphQLNonNull, GraphQLID, GraphQLString } from "graphql";
+import { UserType, PostType, CommentType, GlobalTopicType } from "./types";
+import { User, Post, Comment, GlobalTopic } from "../models";
 
 const users = {
   type: new GraphQLList(UserType),
@@ -21,4 +21,54 @@ const user = {
   },
 };
 
-module.exports = { users, user };
+const globalTopics = {
+  type: new GraphQLList(GlobalTopicType),
+  description: "Get the topics list",
+  resolve: () => GlobalTopic.find(),
+};
+
+const globalTopic = {
+  type: GlobalTopicType,
+  description: "retrieves a single global topic",
+  args: { id: { type: GraphQLID } },
+  resolve: (_, { id }) => GlobalTopic.findById(id),
+};
+
+const posts = {
+  type: new GraphQLList(PostType),
+  description: "retrieves a list of posts",
+  resolve: () => Post.find(),
+};
+
+const post = {
+  type: PostType,
+  description: "retrieves a single post",
+  args: { id: { type: GraphQLID } },
+  resolve: (_, { id }) => Post.findById(id),
+};
+
+const comments = {
+  type: new GraphQLList(CommentType),
+  description: "Retrieves list of commnets",
+  resolve: () => Comment.find(),
+};
+
+const comment = {
+  type: CommentType,
+  description: "Retrieves a single comment",
+  args: {
+    id: { type: new GraphQLNonNull(GraphQLID) },
+  },
+  resolve: (_, { id }) => Comment.findById(id),
+};
+
+module.exports = {
+  users,
+  user,
+  posts,
+  post,
+  comments,
+  comment,
+  globalTopics,
+  globalTopic,
+};

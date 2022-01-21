@@ -1,18 +1,15 @@
 import { Schema, model } from "mongoose";
 
-const globalTopicsSchema = new Schema(
+const globalTopicSchema = new Schema(
   {
-    id: {
-      type: String,
-      unique: true,
-    },
     title: {
       type: String,
+      unique: true,
       required: true,
     },
     dsc: String,
-    isActive: Boolean,
-    topics: [{ type: Schema.Types.ObjectId, ref: "Topic" }],
+    isActive: { type: Boolean, default: true },
+    // topicsId: [String],
   },
   {
     timestamps: true,
@@ -20,4 +17,4 @@ const globalTopicsSchema = new Schema(
   }
 );
 
-module.exports = model("GlobalTopics", globalTopicsSchema);
+module.exports = model("GlobalTopic", globalTopicSchema);

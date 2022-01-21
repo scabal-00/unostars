@@ -2,11 +2,11 @@ import express from "express";
 import bodyParser from "body-parser";
 import { graphqlHTTP } from "express-graphql";
 const schema = require("./graphql/schema");
-// const { authenticate } = require("./middleware/auth");
+const { authenticate } = require("./middleware/auth");
 
 const app = express();
 
-// app.use(authenticate);
+app.use(authenticate);
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());

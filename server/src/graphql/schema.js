@@ -1,6 +1,24 @@
 import { GraphQLSchema, GraphQLObjectType } from "graphql";
-import { users, user } from "./queries";
-import { register, login } from "./mutations";
+
+// Queries
+import { users, user, globalTopics, globalTopic } from "./queries";
+
+// Mutations
+import {
+  register,
+  login,
+  createGlobalTopic,
+  updateGlobalTopic,
+  deleteGlobalTopic,
+  createTopic,
+  updateTopic,
+  deleteTopic,
+  createQuestion,
+  updateQuestion,
+  deleteQuestion,
+  createQuiz,
+  createUserQuiz,
+} from "./mutations";
 
 const QueryType = new GraphQLObjectType({
   name: "QueryType",
@@ -8,6 +26,8 @@ const QueryType = new GraphQLObjectType({
   fields: {
     users,
     user,
+    globalTopics,
+    globalTopic,
   },
 });
 
@@ -17,6 +37,17 @@ const MutationType = new GraphQLObjectType({
   fields: {
     register,
     login,
+    createGlobalTopic,
+    updateGlobalTopic,
+    deleteGlobalTopic,
+    createTopic,
+    updateTopic,
+    deleteTopic,
+    createQuestion,
+    updateQuestion,
+    deleteQuestion,
+    createQuiz,
+    createUserQuiz,
   },
 });
 

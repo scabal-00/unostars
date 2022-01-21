@@ -2,16 +2,15 @@ import { Schema, model } from "mongoose";
 
 const questionSchema = new Schema(
   {
-    id: Number,
-    title: String,
+    title: { type: String, required: true },
     dsc: String,
-    isActive: Boolean,
+    isActive: { type: Boolean, default: true },
+    topicsId: [String],
     private: {
       isPrivate: Boolean,
-      clientId: { type: Schema.ObjectId, ref: "User" },
+      usersId: [String],
     },
-    type: {
-      id: String,
+    questionType: {
       name: String,
       dsc: String,
       options: [

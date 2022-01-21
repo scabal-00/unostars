@@ -2,16 +2,8 @@ import { Schema, model } from "mongoose";
 
 const userSchema = new Schema(
   {
-    userId: {
-      type: String,
-      unique: true,
-    },
-    name: {
-      type: String,
-      required: true,
-    },
-    age: Number,
-    gender: String,
+    userId: { type: String, unique: true },
+    name: { type: String, required: true },
     email: {
       type: String,
       required: true,
@@ -21,16 +13,15 @@ const userSchema = new Schema(
         "Provide a valid email",
       ],
     },
+    isActive: { type: Boolean, default: true, required: true },
+    age: Number,
+    gender: String,
     photo: String,
-    role: {
-      type: String,
-      required: true,
-    },
+    role: { type: String, default: "normal", required: true },
     level: {
-      type: String,
-      required: true,
+      userLevel: { type: String, default: "Ponny" },
+      professionalLevel: { type: String, default: "Junior" },
     },
-    isActive: Boolean,
   },
   {
     timestamps: true,
