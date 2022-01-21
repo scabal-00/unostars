@@ -1,4 +1,5 @@
 import "../styles/globals.css";
+import { UserProvider } from "@auth0/nextjs-auth0";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 const theme = createTheme({
@@ -22,9 +23,11 @@ const theme = createTheme({
 function MyApp({ Component, pageProps }) {
   // eslint-disable-next-line react/jsx-props-no-spreading
   return (
-    <ThemeProvider theme={theme}>
-      <Component {...pageProps} />;
-    </ThemeProvider>
+    <UserProvider>
+      <ThemeProvider theme={theme}>
+        <Component {...pageProps} />;
+      </ThemeProvider>
+    </UserProvider>
   );
 }
 
