@@ -15,13 +15,17 @@ const theme = createTheme({
     },
   },
   typography: {
-    fontFamily: "Lato",
+    fontFamily: "Oswald",
   },
 });
 
 function MyApp({ Component, pageProps }) {
   // eslint-disable-next-line react/jsx-props-no-spreading
-  return <Component {...pageProps} />;
+  return (
+    <ThemeProvider theme={theme}>
+      <Component {...pageProps} />;
+    </ThemeProvider>
+  );
 }
 
 export default MyApp;
