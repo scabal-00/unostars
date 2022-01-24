@@ -13,8 +13,10 @@ import HomeIcon from "@mui/icons-material/Home";
 import QuestionMarkIcon from "@mui/icons-material/QuestionMark";
 import Brightness4Icon from "@mui/icons-material/Brightness4";
 import { useDispatch, useSelector } from "react-redux";
-
 import { updateDarkMode } from "../redux/actions/uiActions";
+
+import AnalyticsIcon from "@mui/icons-material/Analytics";
+import ListAltIcon from "@mui/icons-material/ListAlt";
 
 const pages = [
   {
@@ -26,6 +28,16 @@ const pages = [
     title: "Questions",
     route: "/questions",
     icon: <QuestionMarkIcon />,
+  },
+  {
+    title: "Analytics",
+    route: "/analytics",
+    icon: <AnalyticsIcon />,
+  },
+  {
+    title: "Catalog",
+    route: "/catalog",
+    icon: <ListAltIcon />,
   },
 ];
 
