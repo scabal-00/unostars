@@ -5,6 +5,7 @@ const topicSchema = new Schema(
     title: { type: String, required: true },
     dsc: String,
     isActive: { type: Boolean, default: true },
+    photo: String,
     gTopic: {
       type: String,
       required: true,
