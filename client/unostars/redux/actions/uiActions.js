@@ -1,10 +1,10 @@
 import { UiTypes } from "../types";
 
-export function updateIsLoadingAction(isLoading) {
+export function updateDarkMode(mode) {
   return (dispatch) => {
     dispatch({
-      type: UiTypes.UPDATE_IS_LOADING,
-      payload: isLoading,
+      type: UiTypes.UPDATE_DARK_MODE,
+      payload: mode,
     });
   };
 }

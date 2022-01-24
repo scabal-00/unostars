@@ -1,1 +1,3 @@
-export default { UPDATE_IS_LOADING: false };
+export default {
+  UPDATE_DARK_MODE: false,
+};

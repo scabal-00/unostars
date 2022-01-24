@@ -63,7 +63,7 @@ const Navbar = () => {
 export default Navbar;
 
 const SAppBar = styled(AppBar)`
-  background-color: white;
+  background-color: inherit;
 `;
 
 const SToolbar = styled(Toolbar)`

@@ -4,32 +4,16 @@ import "../styles/globals.css";
 import Head from "next/head";
 
 import { UserProvider } from "@auth0/nextjs-auth0";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { ApolloProvider } from "@apollo/client";
 import { client } from "../services/apollo-client";
 import { Provider } from "react-redux";
 import store from "../redux/store";
 
-const theme = createTheme({
-  palette: {
-    type: "light",
-    primary: {
-      main: "#304FF3",
-    },
-    secondary: {
-      main: "#191919",
-    },
-    info: {
-      main: "#0098CE",
-    },
-  },
-  typography: {
-    fontFamily: "Oswald",
-  },
-});
+import { CustomThemeProvider } from "../components";
 
 function MyApp({ Component, pageProps }) {
   // eslint-disable-next-line react/jsx-props-no-spreading
+
   return (
     <Fragment>
       <Head>
@@ -40,9 +24,9 @@ function MyApp({ Component, pageProps }) {
       <ApolloProvider client={client}>
         <Provider store={store}>
           <UserProvider>
-            <ThemeProvider theme={theme}>
+            <CustomThemeProvider>
               <Component {...pageProps} />;
-            </ThemeProvider>
+            </CustomThemeProvider>
           </UserProvider>
         </Provider>
       </ApolloProvider>
