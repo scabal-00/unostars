@@ -7,9 +7,11 @@ import {
   ListItem,
   ListItemIcon,
   ListItemText,
+  Switch,
 } from "@mui/material";
 import HomeIcon from "@mui/icons-material/Home";
 import QuestionMarkIcon from "@mui/icons-material/QuestionMark";
+import Brightness4Icon from "@mui/icons-material/Brightness4";
 
 const pages = [
   {
@@ -43,6 +45,12 @@ const Sidebar = (props) => {
               </ListItem>
             </Fragment>
           ))}
+          <ListItem secondaryAction={<Switch />} sx={{ marginTop: "2rem" }}>
+            <ListItemIcon>
+              <Brightness4Icon />
+            </ListItemIcon>
+            <ListItemText>Dark Mode</ListItemText>
+          </ListItem>
         </List>
       </Drawer>
     </Fragment>
