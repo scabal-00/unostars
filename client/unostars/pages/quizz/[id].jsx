@@ -1,18 +1,29 @@
 import { Fragment } from "react";
 import { useRouter } from "next/router";
 
-import { Navbar } from "../../components";
+import { Paper } from "@mui/material";
+import { styled } from "@mui/material/styles";
+
+import { Navbar, QuestionList } from "../../components";
 
 const Quizz = () => {
   const router = useRouter();
   const { id } = router.query;
+  console.log(`Quizz: ${id}`);
 
   return (
     <Fragment>
-      <Navbar />
-      Quizz: {id}
+      <Background>
+        <Navbar />
+        <QuestionList />
+      </Background>
     </Fragment>
   );
 };
 
 export default Quizz;
+
+const Background = styled(Paper)`
+  border-radius: 0;
+  min-height: 100vh;
+`;

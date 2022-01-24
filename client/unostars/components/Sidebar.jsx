@@ -7,9 +7,14 @@ import {
   ListItem,
   ListItemIcon,
   ListItemText,
+  Switch,
 } from "@mui/material";
 import HomeIcon from "@mui/icons-material/Home";
 import QuestionMarkIcon from "@mui/icons-material/QuestionMark";
+import Brightness4Icon from "@mui/icons-material/Brightness4";
+import { useDispatch, useSelector } from "react-redux";
+import { updateDarkMode } from "../redux/actions/uiActions";
+
 import AnalyticsIcon from "@mui/icons-material/Analytics";
 import ListAltIcon from "@mui/icons-material/ListAlt";
 
@@ -38,9 +43,19 @@ const pages = [
 
 const Sidebar = (props) => {
   const router = useRouter();
+  const dispatch = useDispatch();
+
+  const isDarkModeActive = useSelector((state) => state.ui.darkMode);
+
+  const dispatchUpdateDarkMode = (isActive) =>
+    dispatch(updateDarkMode(isActive));
 
   const navigate = (route) => {
     router.push(route);
+  };
+
+  const toggleDarkMode = () => {
+    dispatchUpdateDarkMode(!isDarkModeActive);
   };
 
   return (
@@ -55,6 +70,17 @@ const Sidebar = (props) => {
               </ListItem>
             </Fragment>
           ))}
+          <ListItem
+            secondaryAction={
+              <Switch checked={isDarkModeActive} onChange={toggleDarkMode} />
+            }
+            sx={{ marginTop: "2rem" }}
+          >
+            <ListItemIcon>
+              <Brightness4Icon />
+            </ListItemIcon>
+            <ListItemText>Dark Mode</ListItemText>
+          </ListItem>
         </List>
       </Drawer>
     </Fragment>
