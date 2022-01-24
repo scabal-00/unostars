@@ -1,11 +1,13 @@
 import express from "express";
 import bodyParser from "body-parser";
 import { graphqlHTTP } from "express-graphql";
-const schema = require("./graphql/schema");
-const { authenticate } = require("./middleware/auth");
+import schema from "./graphql/schema";
+import { authenticate } from "./middleware/auth";
+import cors from "cors";
 
 const app = express();
 
+app.use(cors());
 // app.use(authenticate);
 
 app.use(bodyParser.urlencoded({ extended: false }));

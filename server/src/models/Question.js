@@ -40,6 +40,7 @@ const questionSchema = new Schema(
     },
     difficulty: Number,
     questionScore: Number,
+    questionTime: { type: Number, default: 0 },
   },
   {
     timestamps: true,
