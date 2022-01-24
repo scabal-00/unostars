@@ -2,19 +2,19 @@ import { Schema, model } from "mongoose";
 
 const topicSchema = new Schema(
   {
-    title: { type: String, unique: true, required: true },
+    title: { type: String, required: true },
     dsc: String,
     isActive: { type: Boolean, default: true },
     gTopic: {
       type: String,
       required: true,
     },
-    questionsId: [
+    /* questionsId: [
       {
         type: String,
         required: true,
       },
-    ],
+    ], */
     difficulty: { type: String, default: "junior" },
     topicScore: { type: Number, default: 0 },
   },

@@ -2,10 +2,10 @@ import { Schema, model } from "mongoose";
 
 const postSchema = new Schema(
   {
-    authorId: {
+    /* authorId: {
       type: String,
       required: true,
-    },
+    }, */
     title: {
       type: String,
       required: true,

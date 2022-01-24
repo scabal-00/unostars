@@ -5,6 +5,7 @@ import {
   GraphQLList,
   GraphQLInt,
   GraphQLBoolean,
+  GraphQLInputObjectType,
 } from "graphql";
 import {
   Post,
@@ -24,6 +25,207 @@ const UserLevelType = new GraphQLObjectType({
     professionalLevel: { type: GraphQLString },
   }),
 });
+
+const PrivateQuestionType = new GraphQLObjectType({
+  name: "PrivateQuestion",
+  description:
+    "Define if the question is prDefine if the question is private and who can see it if soivate and who can see",
+  fields: () => ({
+    isPrivate: { type: GraphQLBoolean },
+    users: {
+      type: new GraphQLList(UserType),
+      resolve(parent) {
+        return User.find({ userId: parent.userId });
+      },
+    },
+  }),
+});
+
+const QuestionOptionsType = new GraphQLObjectType({
+  name: "QuestionOptions",
+  description: "Describe toption(s) of the question",
+  fields: () => ({
+    id: { type: GraphQLID },
+    dsc: { type: GraphQLString },
+    isAnswer: { type: GraphQLBoolean },
+  }),
+});
+
+const QuestionDefType = new GraphQLObjectType({
+  name: "QuestionDefType",
+  description:
+    "Describe the type of question (Multiple selection, One Selection, etc) and the posible questions (options)",
+  fields: () => ({
+    name: { type: GraphQLString },
+    dsc: { type: GraphQLString },
+    options: { type: new GraphQLList(QuestionOptionsType) },
+  }),
+});
+
+const SelectedAnswersType = new GraphQLObjectType({
+  name: "SelectedAnswersType",
+  description: "Stores the user's answers for each topic of your quiz",
+  fields: () => ({
+    questionId: {
+      type: QuestionType,
+      resolve(parent) {
+        return Question.findById(parent.questionId);
+      },
+    },
+    correctAnswer: { type: GraphQLString },
+    userAnswer: { type: GraphQLString },
+    score: { type: GraphQLInt },
+  }),
+});
+
+const CountAnswersType = new GraphQLObjectType({
+  name: "CountAnswersType",
+  description: "Stores the user's count for his answers",
+  fields: () => ({
+    countCorrectAnswers: { type: GraphQLInt },
+    countWrongAnswers: { type: GraphQLInt },
+    totalQuestions: { type: GraphQLInt },
+  }),
+});
+
+const UserAnswersType = new GraphQLObjectType({
+  name: "UserAnswersType",
+  description: "Stores the user's answers for each topic of his quiz",
+  fields: () => ({
+    selectedAnswers: { type: new GraphQLList(SelectedAnswersType) },
+    countAnswers: { type: CountAnswersType },
+    totalScore: { type: GraphQLInt },
+  }),
+});
+
+const InputSelectedAnswers = new GraphQLInputObjectType({
+  name: "InputSelectedAnswers",
+  fields: () => ({
+    questionId: { type: GraphQLString },
+    correctAnswer: { type: GraphQLString },
+    userAnswer: { type: GraphQLString },
+    score: { type: GraphQLInt },
+  }),
+});
+
+const InputCountAnswers = new GraphQLInputObjectType({
+  name: "InputCountAnswers",
+  description: "Stores the user's count for his answers",
+  fields: () => ({
+    countCorrectAnswers: { type: GraphQLInt },
+    countWrongAnswers: { type: GraphQLInt },
+    totalQuestions: { type: GraphQLInt },
+  }),
+});
+
+const InputUserAnswers = new GraphQLInputObjectType({
+  name: "InputUserAnswers",
+  fields: () => ({
+    selectedAnswers: { type: new GraphQLList(InputSelectedAnswers) },
+    countAnswers: { type: InputCountAnswers },
+    totalScore: { type: GraphQLInt },
+  }),
+});
+
+const SelectedTopicsQuizType = new GraphQLObjectType({
+  name: "SelectedTopicsQuizType",
+  description: "Store the list of selected topics and questions from the quiz",
+  fields: () => ({
+    topicId: {
+      type: TopicType,
+      resolve(parent) {
+        return Topic.findById(parent.topicId);
+      },
+    },
+    selectedQuestionsId: {
+      type: new GraphQLList(QuestionType), //(QuestionType),
+      esolve(parent) {
+        return Question.find({ topicsId: parent.selectedQuestionsId });
+      },
+    },
+  }),
+});
+
+const InputSelectedTopicsQuiz = new GraphQLInputObjectType({
+  name: "InputSelectedTopicsQuiz",
+  description: "Store the list of selected topics and questions from the quiz",
+  fields: () => ({
+    topicId: {
+      type: GraphQLString,
+    },
+    selectedQuestionsId: {
+      type: new GraphQLList(GraphQLString),
+    },
+  }),
+});
+
+/* const InputSelectedTopicsQuiz = new GraphQLInputObjectType({
+  name: "InputSelectedTopicsQuiz",
+  description: "Store the list of selected topics and questions from the quiz",
+  fields: () => ({
+    selectedTopics: { type: new GraphQLList(InputSelectedTopicQuiz) },
+  }),
+}); */
+
+const InputUserType = new GraphQLInputObjectType({
+  name: "InputUser",
+  description: "User type",
+  fields: () => ({
+    id: { type: GraphQLID },
+    userId: { type: GraphQLID },
+    name: { type: GraphQLString },
+    email: { type: GraphQLString },
+    isActive: { type: GraphQLBoolean },
+    age: { type: GraphQLInt },
+    gender: { type: GraphQLString },
+    photo: { type: GraphQLString },
+    role: { type: GraphQLString },
+    // level: { type: UserLevelType },
+    createdAt: { type: GraphQLString },
+    updatedAt: { type: GraphQLString },
+  }),
+});
+
+const InputPrivateQuestion = new GraphQLInputObjectType({
+  name: "InputPrivateQuestion",
+  description:
+    "Define if the question is prDefine if the question is private and who can see it if soivate and who can see",
+  fields: () => ({
+    isPrivate: { type: GraphQLBoolean },
+    users: { type: new GraphQLList(InputUserType) },
+  }),
+});
+
+const InputQuestionOptions = new GraphQLInputObjectType({
+  name: "InputQuestionOptions",
+  description: "Describe toption(s) of the question",
+  fields: () => ({
+    id: { type: GraphQLID },
+    dsc: { type: GraphQLString },
+    isAnswer: { type: GraphQLBoolean },
+  }),
+});
+
+const InputQuestionDef = new GraphQLInputObjectType({
+  name: "InputQuestionDef",
+  description:
+    "Describe the type of question (Multiple selection, One Selection, etc) and the posible questions (options)",
+  fields: () => ({
+    name: { type: GraphQLString },
+    dsc: { type: GraphQLString },
+    options: { type: new GraphQLList(InputQuestionOptions) },
+  }),
+});
+
+//Se necesita creat un Input para cada coleccion por "TopicType"
+// const InputTopicQuestion = new GraphQLInputObjectType({
+//   name: "InputTopicQuestion",
+//   fields: () => ({
+//     topic: { type: new GraphQLList(TopicType) },
+//   }),
+// });
+
+//-----------------------
 
 const UserType = new GraphQLObjectType({
   name: "User",
@@ -48,37 +250,18 @@ const QuestionType = new GraphQLObjectType({
   name: "Question",
   description: "Question type",
   fields: () => ({
+    id: { type: GraphQLID },
     title: { type: GraphQLString },
     dsc: { type: GraphQLString },
     isActive: { type: GraphQLBoolean },
     topic: {
-      type: new GraphQLList(TopicType),
+      type: TopicType,
       resolve(parent) {
-        return Topic.find({
-          questionId: [parent.id],
-        });
+        return Topic.findById(parent.topic);
       },
     },
-    /* private: {
-      isPrivate: { type: GraphQLBoolean },
-      users: {
-        type: new GraphQLList(UserType),
-        resolve(parent) {
-          return User.find({ userId: parent.userId });
-        },
-      },
-    },
-    questionType: {
-      name: { type: GraphQLString },
-      dsc: { type: GraphQLString },
-      options: [
-        {
-          id: { type: GraphQLID },
-          dsc: { type: GraphQLString },
-          isAnswer: { type: GraphQLBoolean },
-        },
-      ],
-    }, */
+    privateQuestion: { type: PrivateQuestionType },
+    questionType: { type: QuestionDefType },
     difficulty: { type: GraphQLInt },
     questionScore: { type: GraphQLInt },
     createdAt: { type: GraphQLString },
@@ -103,7 +286,7 @@ const TopicType = new GraphQLObjectType({
     questions: {
       type: new GraphQLList(QuestionType),
       resolve(parent) {
-        return Question.find({ topicsId: [parent.id] });
+        return Question.find({ topic: parent.id });
       },
     },
     difficulty: { type: GraphQLInt },
@@ -121,10 +304,12 @@ const GlobalTopicType = new GraphQLObjectType({
     title: { type: GraphQLString },
     dsc: { type: GraphQLString },
     isActive: { type: GraphQLBoolean },
+    createdAt: { type: GraphQLString },
+    updatedAt: { type: GraphQLString },
     topics: {
       type: new GraphQLList(TopicType),
       resolve(parent) {
-        return Topic.find({ gTopicsId: parent.id });
+        return Topic.find({ gTopic: parent.id });
       },
     },
     createdAt: { type: GraphQLString },
@@ -136,32 +321,18 @@ const QuizType = new GraphQLObjectType({
   name: "Quiz",
   description: "Quiz type",
   fields: () => ({
+    id: { type: GraphQLID },
     title: { type: GraphQLString },
     dsc: { type: GraphQLString },
     isActive: { type: GraphQLBoolean },
     photo: { type: GraphQLString },
-    globalTopic: {
+    gTopic: {
       type: GlobalTopicType,
       resolve(parent) {
-        return GlobalTopic.findById(parent.globalTopicId);
+        return GlobalTopic.findById(parent.gTopic);
       },
     },
-    /* topics: [
-      {
-        topic: {
-          type: TopicType,
-          resolve(parent) {
-            return Topic.findById(parent.topicId);
-          },
-        },
-        selectedQuestionsId: {
-          type: new GraphQLList(QuestionType),
-          resolve(parent) {
-            return Question.find({ topicsId: [parent.topicId] });
-          },
-        },
-      },
-    ], */
+    selectedTopics: { type: new GraphQLList(SelectedTopicsQuizType) },
     createdAt: { type: GraphQLString },
     updatedAt: { type: GraphQLString },
   }),
@@ -193,27 +364,7 @@ const UserQuizType = new GraphQLObjectType({
         return Quiz.findById(parent.quizId);
       },
     },
-    /* userAnswers: {
-      selectedAnswers: [
-        {
-          questionId: {
-            type: QuestionType,
-            resolve(parent) {
-              return Question.findById(parent.questionId);
-            },
-          },
-          correctAnswer: { type: GraphQLString },
-          userAnswer: { type: GraphQLString },
-          score: { type: GraphQLInt },
-        },
-      ],
-      countAnswers: {
-        countCorrectAnswers: { type: GraphQLString },
-        countWrongAnswers: { type: GraphQLString },
-        totalQuestions: { type: GraphQLInt },
-      },
-      totalScore: { type: GraphQLInt },
-    }, */
+    userAnswers: { type: UserAnswersType },
     createdAt: { type: GraphQLString },
     updatedAt: { type: GraphQLString },
   }),
@@ -228,12 +379,12 @@ const PostType = new GraphQLObjectType({
     body: { type: GraphQLString },
     createdAt: { type: GraphQLString },
     updatedAt: { type: GraphQLString },
-    author: {
+    /* author: {
       type: UserType,
       resolve(parent) {
         return User.findById(parent.authorId);
       },
-    },
+    }, */
     comments: {
       type: new GraphQLList(CommentType),
       resolve(parent) {
@@ -265,13 +416,17 @@ const CommentType = new GraphQLObjectType({
 });
 
 module.exports = {
-  UserLevelType,
   UserType,
+  InputPrivateQuestion,
+  InputQuestionDef,
+  QuestionDefType,
   QuestionType,
   TopicType,
   GlobalTopicType,
   QuizType,
+  InputSelectedTopicsQuiz,
   UserQuizType,
+  InputUserAnswers,
   PostType,
   CommentType,
 };
