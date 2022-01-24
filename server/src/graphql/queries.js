@@ -54,7 +54,7 @@ const globalTopic = {
 };
 
 const topics = {
-  type: new GraphQLList(GlobalTopicType),
+  type: new GraphQLList(TopicType),
   description: "Get the topics list",
   resolve: () => Topic.find(),
 };
@@ -67,7 +67,7 @@ const topic = {
 };
 
 const questions = {
-  type: new GraphQLList(GlobalTopicType),
+  type: new GraphQLList(QuestionType),
   description: "Get the question list",
   resolve: () => Question.find(),
 };
@@ -80,9 +80,9 @@ const question = {
 };
 
 const quizzes = {
-  type: new GraphQLList(GlobalTopicType),
+  type: new GraphQLList(QuizType),
   description: "Get the quizzes list",
-  resolve: () => Quiz.find(),
+  resolve: (_, {}) => Quiz.find(),
 };
 
 const quiz = {
@@ -93,7 +93,7 @@ const quiz = {
 };
 
 const userQuizzes = {
-  type: new GraphQLList(GlobalTopicType),
+  type: new GraphQLList(UserQuizType),
   description: "Get the user quizzes list",
   resolve: () => UserQuiz.find(),
 };
