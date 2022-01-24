@@ -278,6 +278,7 @@ const TopicType = new GraphQLObjectType({
     title: { type: GraphQLString },
     dsc: { type: GraphQLString },
     isActive: { type: GraphQLBoolean },
+    photo: { type: GraphQLString },
     gTopic: {
       type: GlobalTopicType,
       resolve(parent) {
@@ -306,6 +307,7 @@ const GlobalTopicType = new GraphQLObjectType({
     title: { type: GraphQLString },
     dsc: { type: GraphQLString },
     isActive: { type: GraphQLBoolean },
+    photo: { type: GraphQLString },
     createdAt: { type: GraphQLString },
     updatedAt: { type: GraphQLString },
     topics: {
