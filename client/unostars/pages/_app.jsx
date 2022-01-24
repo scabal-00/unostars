@@ -7,6 +7,8 @@ import { UserProvider } from "@auth0/nextjs-auth0";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { ApolloProvider } from "@apollo/client";
 import { client } from "../services/apollo-client";
+import { Provider } from "react-redux";
+import store from "../redux/store";
 
 const theme = createTheme({
   palette: {
@@ -36,11 +38,13 @@ function MyApp({ Component, pageProps }) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <ApolloProvider client={client}>
-        <UserProvider>
-          <ThemeProvider theme={theme}>
-            <Component {...pageProps} />;
-          </ThemeProvider>
-        </UserProvider>
+        <Provider store={store}>
+          <UserProvider>
+            <ThemeProvider theme={theme}>
+              <Component {...pageProps} />;
+            </ThemeProvider>
+          </UserProvider>
+        </Provider>
       </ApolloProvider>
     </Fragment>
   );
