@@ -8,3 +8,12 @@ export function updateIsLoadingAction(isLoading) {
     });
   };
 }
+
+export function updateDarkMode(darkMode) {
+  return (dispatch) => {
+    dispatch({
+      type: UiTypes.UPDATE_DARK_MODE,
+      payload: darkMode,
+    });
+  };
+}
