@@ -6,7 +6,7 @@ const { authenticate } = require("./middleware/auth");
 
 const app = express();
 
-app.use(authenticate);
+// app.use(authenticate);
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());

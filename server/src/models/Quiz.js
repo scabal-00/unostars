@@ -8,11 +8,13 @@ const quizSchema = new Schema(
     photo: String,
     gTopic: {
       type: String,
+      required: true,
     },
-    topics: [
+    selectedTopics: [
       {
         topicId: {
           type: String,
+          default: "",
         },
         selectedQuestionsId: [String],
       },

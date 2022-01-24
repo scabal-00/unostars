@@ -1,6 +1,25 @@
 import { GraphQLList, GraphQLNonNull, GraphQLID, GraphQLString } from "graphql";
-import { UserType, PostType, CommentType, GlobalTopicType } from "./types";
-import { User, Post, Comment, GlobalTopic } from "../models";
+import {
+  UserLevelType,
+  UserType,
+  QuestionType,
+  TopicType,
+  GlobalTopicType,
+  QuizType,
+  UserQuizType,
+  PostType,
+  CommentType,
+} from "./types";
+import {
+  Post,
+  Comment,
+  User,
+  GlobalTopic,
+  Topic,
+  Question,
+  Quiz,
+  UserQuiz,
+} from "../models";
 
 const users = {
   type: new GraphQLList(UserType),
@@ -23,7 +42,7 @@ const user = {
 
 const globalTopics = {
   type: new GraphQLList(GlobalTopicType),
-  description: "Get the topics list",
+  description: "Get the global topics list",
   resolve: () => GlobalTopic.find(),
 };
 
@@ -32,6 +51,58 @@ const globalTopic = {
   description: "retrieves a single global topic",
   args: { id: { type: GraphQLID } },
   resolve: (_, { id }) => GlobalTopic.findById(id),
+};
+
+const topics = {
+  type: new GraphQLList(GlobalTopicType),
+  description: "Get the topics list",
+  resolve: () => Topic.find(),
+};
+
+const topic = {
+  type: TopicType,
+  description: "retrieves a single topic",
+  args: { id: { type: GraphQLID } },
+  resolve: (_, { id }) => Topic.findById(id),
+};
+
+const questions = {
+  type: new GraphQLList(GlobalTopicType),
+  description: "Get the question list",
+  resolve: () => Question.find(),
+};
+
+const question = {
+  type: QuestionType,
+  description: "retrieves a single question",
+  args: { id: { type: GraphQLID } },
+  resolve: (_, { id }) => Question.findById(id),
+};
+
+const quizzes = {
+  type: new GraphQLList(GlobalTopicType),
+  description: "Get the quizzes list",
+  resolve: () => Quiz.find(),
+};
+
+const quiz = {
+  type: QuizType,
+  description: "retrieves a single quiz",
+  args: { id: { type: GraphQLID } },
+  resolve: (_, { id }) => Quiz.findById(id),
+};
+
+const userQuizzes = {
+  type: new GraphQLList(GlobalTopicType),
+  description: "Get the user quizzes list",
+  resolve: () => UserQuiz.find(),
+};
+
+const userQuiz = {
+  type: UserQuizType,
+  description: "retrieves a single user quiz",
+  args: { id: { type: GraphQLID } },
+  resolve: (_, { id }) => UserQuiz.findById(id),
 };
 
 const posts = {
@@ -65,10 +136,18 @@ const comment = {
 module.exports = {
   users,
   user,
+  globalTopics,
+  globalTopic,
+  topics,
+  topic,
+  questions,
+  question,
+  quizzes,
+  quiz,
+  userQuizzes,
+  userQuiz,
   posts,
   post,
   comments,
   comment,
-  globalTopics,
-  globalTopic,
 };

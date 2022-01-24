@@ -13,7 +13,6 @@ const globalTopicSchema = new Schema(
   },
   {
     timestamps: true,
-    versionKey: false,
   }
 );
 

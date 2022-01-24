@@ -14,8 +14,9 @@ const userQuizSchema = new Schema(
     },
     quizId: {
       type: String,
+      required: true,
     },
-    /* userAnswers: {
+    userAnswers: {
       selectedAnswers: [
         {
           questionId: String,
@@ -30,7 +31,7 @@ const userQuizSchema = new Schema(
         totalQuestions: { type: Number, default: 0 },
       },
       totalScore: { type: Number, default: 0 },
-    }, */
+    },
   },
   {
     timestamps: true,
