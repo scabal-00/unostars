@@ -56,7 +56,7 @@ const globalTopic = {
 const topics = {
   type: new GraphQLList(GlobalTopicType),
   description: "Get the topics list",
-  resolve: () => Topic.findAll(),
+  resolve: () => Topic.find(),
 };
 
 const topic = {
