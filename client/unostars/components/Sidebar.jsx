@@ -10,6 +10,8 @@ import {
 } from "@mui/material";
 import HomeIcon from "@mui/icons-material/Home";
 import QuestionMarkIcon from "@mui/icons-material/QuestionMark";
+import AnalyticsIcon from "@mui/icons-material/Analytics";
+import ListAltIcon from "@mui/icons-material/ListAlt";
 
 const pages = [
   {
@@ -21,6 +23,16 @@ const pages = [
     title: "Questions",
     route: "/questions",
     icon: <QuestionMarkIcon />,
+  },
+  {
+    title: "Analytics",
+    route: "/analytics",
+    icon: <AnalyticsIcon />,
+  },
+  {
+    title: "Catalog",
+    route: "/catalog",
+    icon: <ListAltIcon />,
   },
 ];
 
