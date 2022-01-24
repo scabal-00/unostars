@@ -6,6 +6,8 @@ import KeyboardArrowLeft from "@mui/icons-material/KeyboardArrowLeft";
 import KeyboardArrowRight from "@mui/icons-material/KeyboardArrowRight";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 
+import Question from "./Question";
+
 const QuestionList = () => {
   const [activeStep, setActiveStep] = useState(0);
   const [progress, setProgress] = useState(10);
@@ -17,6 +19,7 @@ const QuestionList = () => {
           <Typography color="primary">11:45</Typography>
         </span>
       </TimeContainer>
+      <Question />
       <StepperContainer elevation={0}>
         <LinearProgress
           variant="determinate"

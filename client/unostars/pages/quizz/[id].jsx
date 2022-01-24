@@ -9,13 +9,13 @@ import { Navbar, QuestionList } from "../../components";
 const Quizz = () => {
   const router = useRouter();
   const { id } = router.query;
+  console.log(`Quizz: ${id}`);
 
   return (
     <Fragment>
       <Background>
         <Navbar />
         <QuestionList />
-        Quizz: {id}
       </Background>
     </Fragment>
   );
