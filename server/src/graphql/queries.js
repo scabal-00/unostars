@@ -1,25 +1,13 @@
-import { GraphQLList, GraphQLNonNull, GraphQLID, GraphQLString } from "graphql";
+import { GraphQLList, GraphQLID } from "graphql";
 import {
-  UserLevelType,
   UserType,
   QuestionType,
   TopicType,
   GlobalTopicType,
   QuizType,
   UserQuizType,
-  PostType,
-  CommentType,
 } from "./types";
-import {
-  Post,
-  Comment,
-  User,
-  GlobalTopic,
-  Topic,
-  Question,
-  Quiz,
-  UserQuiz,
-} from "../models";
+import { User, GlobalTopic, Topic, Question, Quiz, UserQuiz } from "../models";
 
 const users = {
   type: new GraphQLList(UserType),
@@ -105,34 +93,6 @@ const userQuiz = {
   resolve: (_, { id }) => UserQuiz.findById(id),
 };
 
-const posts = {
-  type: new GraphQLList(PostType),
-  description: "retrieves a list of posts",
-  resolve: () => Post.find(),
-};
-
-const post = {
-  type: PostType,
-  description: "retrieves a single post",
-  args: { id: { type: GraphQLID } },
-  resolve: (_, { id }) => Post.findById(id),
-};
-
-const comments = {
-  type: new GraphQLList(CommentType),
-  description: "Retrieves list of commnets",
-  resolve: () => Comment.find(),
-};
-
-const comment = {
-  type: CommentType,
-  description: "Retrieves a single comment",
-  args: {
-    id: { type: new GraphQLNonNull(GraphQLID) },
-  },
-  resolve: (_, { id }) => Comment.findById(id),
-};
-
 module.exports = {
   users,
   user,
@@ -146,8 +106,4 @@ module.exports = {
   quiz,
   userQuizzes,
   userQuiz,
-  posts,
-  post,
-  comments,
-  comment,
 };

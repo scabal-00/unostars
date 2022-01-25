@@ -14,10 +14,6 @@ import {
   quiz,
   userQuizzes,
   userQuiz,
-  posts,
-  post,
-  comments,
-  comment,
 } from "./queries";
 
 // Mutations
@@ -39,12 +35,6 @@ import {
   createUserQuiz,
   updateUserQuiz,
   deleteUserQuiz,
-  createPost,
-  addComment,
-  updatePost,
-  deletePost,
-  updateComment,
-  deleteComment,
 } from "./mutations";
 
 const QueryType = new GraphQLObjectType({
@@ -63,10 +53,6 @@ const QueryType = new GraphQLObjectType({
     quiz,
     userQuizzes,
     userQuiz,
-    posts,
-    post,
-    comments,
-    comment,
   },
 });
 
@@ -91,12 +77,6 @@ const MutationType = new GraphQLObjectType({
     createUserQuiz,
     updateUserQuiz,
     deleteUserQuiz,
-    createPost,
-    addComment,
-    updatePost,
-    deletePost,
-    updateComment,
-    deleteComment,
   },
 });
 
