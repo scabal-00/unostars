@@ -18,7 +18,7 @@ const QuizzItem = (props) => {
 
   return (
     <SCard>
-      <CardActionArea onClick={goToQuizz.bind(null, props.quizzId)}>
+      <CardActionArea onClick={goToQuizz.bind(null, props?.quizzId)}>
         <CardMedia
           component="img"
           height="140"
@@ -26,10 +26,10 @@ const QuizzItem = (props) => {
         />
         <CardContent>
           <Typography gutterBottom variant="h5" component="div">
-            JavaScript
+            {props?.title}
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            Async/Await course advanced level.
+            {props?.dsc}
           </Typography>
         </CardContent>
       </CardActionArea>
