@@ -115,7 +115,25 @@ const UserAnswersType = new GraphQLObjectType({
   fields: () => ({
     selectedAnswers: { type: new GraphQLList(SelectedAnswersType) },
     countAnswers: { type: CountAnswersType },
-    totalScore: { type: GraphQLInt },
+    totalScore: {
+      type: GraphQLInt,
+      async resolve(parent) {
+        console.log(parent);
+        /* const questionObj = await Question.findById(parent.questionId);
+        const rightOptions = await questionObj?.questionType?.options?.filter(
+          (option) => option.isAnswer === true
+        );
+
+        if (
+          rightOptions.map((data) => data.id).toString() ==
+          parent?.userAnswer?.toString()
+        ) {
+          return questionObj?.questionScore;
+        } else {
+          return 0;
+        } */
+      },
+    },
   }),
 });
 
