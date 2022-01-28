@@ -6,7 +6,7 @@ import {
   GraphQLInt,
   GraphQLBoolean,
 } from "graphql";
-import { User, Question, Topic, GlobalTopic, Quiz } from "../models";
+import { User, Question, Topic, GlobalTopic, Quiz, UserQuiz } from "../models";
 
 //-------Types Definition---------
 
@@ -65,9 +65,37 @@ const SelectedAnswersType = new GraphQLObjectType({
         return Question.findById(parent.questionId);
       },
     },
-    correctAnswer: { type: GraphQLString },
-    userAnswer: { type: GraphQLString },
-    score: { type: GraphQLInt },
+    correctAnswer: {
+      type: new GraphQLList(GraphQLString),
+      async resolve(parent) {
+        const questionObj = await Question.findById(parent.questionId);
+        const rightOptions = await questionObj?.questionType?.options?.filter(
+          (option) => option.isAnswer === true
+        );
+        /* console.log(parent);
+        console.log("--->"); */
+        return rightOptions.map((data) => data.id);
+      },
+    },
+    userAnswer: { type: new GraphQLList(GraphQLString) },
+    score: {
+      type: GraphQLInt,
+      async resolve(parent) {
+        const questionObj = await Question.findById(parent.questionId);
+        const rightOptions = await questionObj?.questionType?.options?.filter(
+          (option) => option.isAnswer === true
+        );
+
+        if (
+          rightOptions.map((data) => data.id).toString() ==
+          parent?.userAnswer?.toString()
+        ) {
+          return questionObj?.questionScore;
+        } else {
+          return 0;
+        }
+      },
+    },
   }),
 });
 
@@ -232,19 +260,11 @@ const UserQuizType = new GraphQLObjectType({
   description: "UserQuiz type",
   fields: () => ({
     id: { type: GraphQLID },
-    title: { type: GraphQLString },
-    dsc: { type: GraphQLString },
     isActive: { type: GraphQLBoolean },
     userId: {
       type: UserType,
       resolve(parent) {
         return User.findOne({ userId: parent.userId });
-      },
-    },
-    remitterId: {
-      type: UserType,
-      resolve(parent) {
-        return User.findOne({ userId: parent.remitterId });
       },
     },
     quiz: {
@@ -253,7 +273,23 @@ const UserQuizType = new GraphQLObjectType({
         return Quiz.findById(parent.quizId);
       },
     },
-    userAnswers: { type: UserAnswersType },
+    userAnswers: {
+      type: UserAnswersType,
+      async resolve(parent) {
+        const userQuizUpdated = await UserQuiz.findOneAndUpdate(
+          {
+            _id: parent.id,
+          },
+          {
+            $set: parent.userAnswers,
+          }
+        );
+        // console.log(parent.userAnswers);
+        // console.log(parent.userAnswers.score);***
+        // console.log(userQuizUpdated);
+        return parent.userAnswers;
+      },
+    },
     createdAt: { type: GraphQLString },
     updatedAt: { type: GraphQLString },
   }),

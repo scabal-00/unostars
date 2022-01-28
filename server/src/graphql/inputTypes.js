@@ -11,8 +11,8 @@ const InputSelectedAnswers = new GraphQLInputObjectType({
   name: "InputSelectedAnswers",
   fields: () => ({
     questionId: { type: GraphQLString },
-    correctAnswer: { type: GraphQLString },
-    userAnswer: { type: GraphQLString },
+    correctAnswer: { type: new GraphQLList(GraphQLString) },
+    userAnswer: { type: new GraphQLList(GraphQLString) },
     score: { type: GraphQLInt },
   }),
 });

@@ -431,19 +431,13 @@ const createUserQuiz = {
   type: UserQuizType,
   description: "Create a new user-quiz",
   args: {
-    title: { type: new GraphQLNonNull(GraphQLString) },
-    dsc: { type: GraphQLString },
     userId: { type: new GraphQLNonNull(GraphQLString) },
-    remitterId: { type: GraphQLString },
     quizId: { type: GraphQLString },
     userAnswers: { type: InputUserAnswers },
   },
   resolve(_, args, { verifiedUser }) {
     const userQuiz = new UserQuiz({
-      title: args.title,
-      dsc: args.dsc,
       userId: args.userId,
-      remitterId: args.remitterId,
       quizId: args.quizId,
       userAnswers: args.userAnswers,
     });
@@ -456,18 +450,11 @@ const updateUserQuiz = {
   description: "update a user-quiz",
   args: {
     id: { type: new GraphQLNonNull(GraphQLID) },
-    title: { type: new GraphQLNonNull(GraphQLString) },
-    dsc: { type: GraphQLString },
     userId: { type: new GraphQLNonNull(GraphQLString) },
-    remitterId: { type: GraphQLString },
-    quizId: { type: GraphQLString },
+    quizId: { type: new GraphQLNonNull(GraphQLString) },
     userAnswers: { type: InputUserAnswers },
   },
-  async resolve(
-    _,
-    { id, title, dsc, userId, remitterId, quizId, userAnswers },
-    { verifiedUser }
-  ) {
+  async resolve(_, { id, userId, quizId, userAnswers }, { verifiedUser }) {
     // if (!verifiedUser) throw new Error("UnAuthorized");
 
     const userQuizUpdated = await UserQuiz.findOneAndUpdate(
@@ -476,12 +463,9 @@ const updateUserQuiz = {
         // userId: verifiedUser._id,
       },
       {
-        title,
-        dsc,
         userId,
-        remitterId,
         quizId,
-        userAnswers,
+        $set: userAnswers,
       },
       {
         new: true,
