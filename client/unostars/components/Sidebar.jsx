@@ -17,7 +17,7 @@ import { updateDarkMode } from "../redux/actions/uiActions";
 
 import AnalyticsIcon from "@mui/icons-material/Analytics";
 import ListAltIcon from "@mui/icons-material/ListAlt";
-
+import LogoutIcon from "@mui/icons-material/Logout";
 const pages = [
   {
     title: "Home",
@@ -38,6 +38,11 @@ const pages = [
     title: "Catalog",
     route: "/catalog",
     icon: <ListAltIcon />,
+  },
+  {
+    title: "logout",
+    route: "/api/auth/logout",
+    icon: <LogoutIcon />,
   },
 ];
 

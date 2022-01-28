@@ -1,38 +1,14 @@
 import { Fragment } from "react";
 
+import { withPageAuthRequired } from "@auth0/nextjs-auth0";
 import { Container, Paper, Grid, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import { useUser } from "@auth0/nextjs-auth0";
+
 
 import { Navbar, QuizzList } from "../components";
 
 export default function Home() {
-  const { user } = useUser();
-  // {
-  //   !user && (
-  //     <>
-  //       <button>
-  //         <Link href="/api/auth/login">
-  //           <a>Login</a>
-  //         </Link>
-  //       </button>
-  //     </>
-  //   );
-  // }
-  // {
-  //   user && (
-  //     <>
-  //       <img src={user.picture} alt={user.name} />
-  //       <h2> Welcome {user.name}</h2>
 
-  //       <button>
-  //         <Link href="/api/auth/logout">
-  //           <a>Logout</a>
-  //         </Link>
-  //       </button>
-  //     </>
-  //   );
-  // }
   return (
     <Fragment>
       <Background elevation={0}>
@@ -64,3 +40,6 @@ const Background = styled(Paper)`
   border-radius: 0;
   min-height: 100vh;
 `;
+
+
+export const getServerSideProps = withPageAuthRequired();

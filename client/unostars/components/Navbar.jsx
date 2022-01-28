@@ -11,12 +11,15 @@ import {
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import MenuIcon from "@mui/icons-material/Menu";
-
+import { useUser } from "@auth0/nextjs-auth0";
 import { Sidebar } from ".";
 
 const Navbar = () => {
   const [openSidebar, setOpenSidebar] = useState(false);
+const { user, error, isLoading } = useUser();
 
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>{error.message}</div>
   return (
     <Fragment>
       <SAppBar position="static">
@@ -41,12 +44,12 @@ const Navbar = () => {
                 sx={{ position: "absolute" }}
               />
               <Avatar
-                src="https://www.mantruckandbus.com/fileadmin/media/bilder/02_19/219_05_busbusiness_interviewHeader_1485x1254.jpg"
+                src={user.picture}
                 sx={{ position: "absolute", height: 35, width: 35 }}
               />
             </IconButton>
             <TextWrapper>
-              <Typography color="text.primary">John Doe</Typography>
+              <Typography color="text.primary">{user.name}</Typography>
               <Typography variant="caption" color="text.secondary">
                 Nivel: Pegaso
               </Typography>
