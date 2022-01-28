@@ -10,3 +10,30 @@ export default handleAuth();
 // /api/auth/callback
 // /api/auth/logout
 // /api/auth/me
+
+// const { user } = useUser();
+// {
+//   !user && (
+//     <>
+//       <button>
+//         <Link href="/api/auth/login">
+//           <a>Login</a>
+//         </Link>
+//       </button>
+//     </>
+//   );
+// }
+// {
+//   user && (
+//     <>
+//       <img src={user.picture} alt={user.name} />
+//       <h2> Welcome {user.name}</h2>
+
+//       <button>
+//         <Link href="/api/auth/logout">
+//           <a>Logout</a>
+//         </Link>
+//       </button>
+//     </>
+//   );
+// }
