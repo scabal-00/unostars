@@ -2,15 +2,10 @@ import { Schema, model } from "mongoose";
 
 const userQuizSchema = new Schema(
   {
-    title: { type: String, required: true },
-    dsc: String,
     isActive: { type: Boolean, default: true },
     userId: {
       type: String,
       required: true,
-    },
-    remitterId: {
-      type: String,
     },
     quizId: {
       type: String,
@@ -20,8 +15,8 @@ const userQuizSchema = new Schema(
       selectedAnswers: [
         {
           questionId: String,
-          correctAnswer: String,
-          userAnswer: String,
+          correctAnswer: [String],
+          userAnswer: [String],
           score: { type: Number, default: 0 },
         },
       ],
