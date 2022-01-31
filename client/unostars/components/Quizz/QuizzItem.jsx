@@ -19,11 +19,7 @@ const QuizzItem = (props) => {
   return (
     <SCard>
       <CardActionArea onClick={goToQuizz.bind(null, props?.quizzId)}>
-        <CardMedia
-          component="img"
-          height="140"
-          image="https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/Unofficial_JavaScript_logo_2.svg/1200px-Unofficial_JavaScript_logo_2.svg.png"
-        />
+        <CardMedia component="img" height="140" image={props?.photo} />
         <CardContent>
           <Typography gutterBottom variant="h5" component="div">
             {props?.title}

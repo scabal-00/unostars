@@ -7,6 +7,7 @@ const GetAssesments = gql`
       title
       dsc
       isActive
+      photo
       createdAt
     }
   }
