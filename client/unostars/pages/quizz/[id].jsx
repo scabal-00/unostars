@@ -22,7 +22,7 @@ const Quizz = (props) => {
 
   const getQuestionsArray = () => {
     const questionsArray = [];
-    props?.quizz?.gTopic?.topics?.forEach((topic) => {
+    props?.quiz?.gTopic?.topics?.forEach((topic) => {
       topic?.questions?.forEach((question) => {
         questionsArray.push(question);
       });
@@ -34,7 +34,7 @@ const Quizz = (props) => {
     <Fragment>
       <Background>
         <Navbar />
-        <QuestionList questions={questions} />
+        <QuestionList questions={questions} quizId={props.quiz.id} />
       </Background>
     </Fragment>
   );
@@ -54,7 +54,7 @@ export async function getServerSideProps(context) {
   });
   return {
     props: {
-      quizz: data.quiz,
+      quiz: data.quiz,
     },
   };
 }

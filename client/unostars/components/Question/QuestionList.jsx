@@ -1,5 +1,7 @@
 import { Fragment, useState, useEffect } from "react";
 
+import { useUser } from "@auth0/nextjs-auth0";
+import { useMutation } from "@apollo/client";
 import SwipeableViews from "react-swipeable-views";
 import { Paper, Grid, Typography, Fab, LinearProgress } from "@mui/material";
 import { styled } from "@mui/material/styles";
@@ -8,6 +10,8 @@ import KeyboardArrowRight from "@mui/icons-material/KeyboardArrowRight";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 
 import Question from "./Question";
+import { ConfirmationAlert } from "../";
+import { CreateUserQuiz } from "../../services/apollo-client/mutations";
 
 const QuestionList = (props) => {
   const { questions } = props;
@@ -17,6 +21,8 @@ const QuestionList = (props) => {
   const [activeStep, setActiveStep] = useState(0);
   const [progress, setProgress] = useState(0);
   const [answers, setAnswers] = useState([]);
+  const [score, setScore] = useState(0);
+  const [dialog, setDialog] = useState(false);
 
   useEffect(() => {
     if (answers.length === 0 && questions.length > 0) {
@@ -25,6 +31,10 @@ const QuestionList = (props) => {
   }, [questions]);
 
   // console.log(props);
+
+  const { user, error, isLoading } = useUser();
+
+  const [createUserQuiz, createUserQuizResult] = useMutation(CreateUserQuiz);
 
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -38,10 +48,16 @@ const QuestionList = (props) => {
     const newAnswersArray = [...answers];
     newAnswersArray[questionIndex] = {
       questionId,
-      userAnswer: selectedAnswer,
+      userAnswer: [selectedAnswer],
     };
     setAnswers(newAnswersArray);
     if (activeStep === numberOfQuestions - 1) {
+      const numberOfAnsweredAnswers = getNumberOfAnsweredAnswers();
+      if (numberOfAnsweredAnswers < numberOfQuestions) {
+        setDialog(true);
+      } else {
+        handleFinishQuizz();
+      }
       alert("Finished!");
       return;
     }
@@ -50,12 +66,8 @@ const QuestionList = (props) => {
   };
 
   const handleChangeProgress = () => {
-    let numberOfAnsweredAnswers = 0;
-    answers.forEach((answer) => {
-      if (answer !== null) {
-        ++numberOfAnsweredAnswers;
-      }
-    });
+    const numberOfAnsweredAnswers = getNumberOfAnsweredAnswers();
+
     const currentProgress =
       ((numberOfAnsweredAnswers + 1) * 100) / numberOfQuestions;
     if (currentProgress > 100) {
@@ -63,6 +75,31 @@ const QuestionList = (props) => {
     } else {
       setProgress(currentProgress);
     }
+  };
+
+  const getNumberOfAnsweredAnswers = () => {
+    let count = 0;
+    answers.forEach((answer) => {
+      if (answer !== null) {
+        ++count;
+      }
+    });
+    return count;
+  };
+
+  const handleFinishQuizz = () => {
+    setDialog(false);
+    const answersArray = [...answers];
+    const filteredAnswers = answersArray.filter((answer) => answer !== null);
+    setAnswers(filteredAnswers);
+
+    createUserQuiz({
+      variables: {
+        userId: user?.id || "61ee93955e8cb303ebaf0db3",
+        quizId: props.quizId,
+        userAnswers: { selectedAnswers: filteredAnswers },
+      },
+    });
   };
 
   return (
@@ -122,6 +159,13 @@ const QuestionList = (props) => {
           </Grid>
         </Grid>
       </StepperContainer>
+      <ConfirmationAlert
+        title="Your Assessment"
+        description="You have some unanswered questions, are sure you want to finish the assessment?"
+        open={dialog}
+        handleClose={() => setDialog(false)}
+        onAccept={handleFinishQuizz}
+      />
     </Fragment>
   );
 };
