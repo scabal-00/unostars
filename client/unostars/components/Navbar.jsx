@@ -16,10 +16,10 @@ import { Sidebar } from ".";
 
 const Navbar = () => {
   const [openSidebar, setOpenSidebar] = useState(false);
-const { user, error, isLoading } = useUser();
+  const { user, error, isLoading } = useUser();
 
   if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>{error.message}</div>
+  if (error) return <div>{error.message}</div>;
   return (
     <Fragment>
       <SAppBar position="static">
@@ -44,12 +44,12 @@ const { user, error, isLoading } = useUser();
                 sx={{ position: "absolute" }}
               />
               <Avatar
-                src={user.picture}
+                src={user?.picture}
                 sx={{ position: "absolute", height: 35, width: 35 }}
               />
             </IconButton>
             <TextWrapper>
-              <Typography color="text.primary">{user.name}</Typography>
+              <Typography color="text.primary">{user?.name}</Typography>
               <Typography variant="caption" color="text.secondary">
                 Nivel: Pegaso
               </Typography>

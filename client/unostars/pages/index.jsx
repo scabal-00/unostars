@@ -1,13 +1,38 @@
-import { Fragment } from "react";
+import { Fragment, useEffect, useState } from "react";
 
 import { withPageAuthRequired } from "@auth0/nextjs-auth0";
 import { Container, Paper, Grid, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
-
+import { useLazyQuery } from "@apollo/client";
+import { client } from "../services/apollo-client";
 
 import { Navbar, QuizzList } from "../components";
+import { GetAssesments } from "../services/apollo-client/queries";
 
-export default function Home() {
+export default function Home(props) {
+  const [assesments, setAssesments] = useState(props.availableAssesments);
+
+  const [getAssesments, getAssesmentsResult] = useLazyQuery(GetAssesments);
+
+  useEffect(() => {
+    handleGetAssesments();
+  }, []);
+
+  useEffect(() => {
+    if (
+      getAssesmentsResult.called &&
+      !getAssesmentsResult.loading &&
+      getAssesmentsResult.data
+    ) {
+      setAssesments(getAssesmentsResult.data.quizzes);
+    }
+  }, [getAssesmentsResult]);
+
+  const handleGetAssesments = () => {
+    if (!assesments) {
+      getAssesments();
+    }
+  };
 
   return (
     <Fragment>
@@ -16,18 +41,10 @@ export default function Home() {
         <Container maxWidth="xl" sx={{ marginTop: "1.5rem" }}>
           <Grid container>
             <Grid item xs={12} sx={{ marginTop: "1rem" }}>
-              <Typography>Current Assesments</Typography>
-            </Grid>
-            <Grid item xs={12}>
-              <QuizzList />
-            </Grid>
-          </Grid>
-          <Grid container>
-            <Grid item xs={12} sx={{ marginTop: "1rem" }}>
               <Typography>Available Assesments</Typography>
             </Grid>
             <Grid item xs={12}>
-              <QuizzList />
+              <QuizzList quizzList={assesments} />
             </Grid>
           </Grid>
         </Container>
@@ -41,5 +58,12 @@ const Background = styled(Paper)`
   min-height: 100vh;
 `;
 
-
-export const getServerSideProps = withPageAuthRequired();
+export async function getServerSideProps() {
+  withPageAuthRequired();
+  const { data } = await client.query({ query: GetAssesments });
+  return {
+    props: {
+      availableAssesments: data.quizzes,
+    },
+  };
+}
