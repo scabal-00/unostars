@@ -1,4 +1,4 @@
-import { Fragment } from "react";
+import { Fragment, useState, useEffect } from "react";
 import { useRouter } from "next/router";
 
 import { Paper } from "@mui/material";
@@ -14,11 +14,27 @@ const Quizz = (props) => {
   const { id } = router.query;
   console.log(`Quizz: ${id}`);
 
+  const [questions, setQuestions] = useState([]);
+
+  useEffect(() => {
+    getQuestionsArray();
+  }, []);
+
+  const getQuestionsArray = () => {
+    const questionsArray = [];
+    props?.quizz?.gTopic?.topics?.forEach((topic) => {
+      topic?.questions?.forEach((question) => {
+        questionsArray.push(question);
+      });
+    });
+    setQuestions(questionsArray);
+  };
+
   return (
     <Fragment>
       <Background>
         <Navbar />
-        <QuestionList />
+        <QuestionList questions={questions} />
       </Background>
     </Fragment>
   );
