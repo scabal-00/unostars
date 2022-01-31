@@ -94,7 +94,7 @@ const QuestionList = (props) => {
 
     createUserQuiz({
       variables: {
-        userId: user?.id || "61ee93955e8cb303ebaf0db3",
+        userId: user?.id || "123123",
         quizId: props.quizId,
         userAnswers: { selectedAnswers: filteredAnswers },
       },
