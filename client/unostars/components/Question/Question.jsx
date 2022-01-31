@@ -2,7 +2,7 @@ import { Paper, Grid, Typography, Button, Chip } from "@mui/material";
 import { styled } from "@mui/material/styles";
 
 const Question = (props) => {
-  // console.log("Question props", props);
+  console.log("Question props", props);
   return (
     <Container>
       <QuestionContainer>
@@ -18,7 +18,8 @@ const Question = (props) => {
             <Button
               fullWidth
               variant={
-                option.id === props?.selectedAnswers[props?.index]?.userAnswer
+                option.id ===
+                props?.selectedAnswers[props?.index]?.userAnswer[0]
                   ? "contained"
                   : "outlined"
               }
