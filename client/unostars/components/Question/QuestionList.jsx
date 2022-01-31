@@ -58,7 +58,6 @@ const QuestionList = (props) => {
       } else {
         handleFinishQuizz();
       }
-      alert("Finished!");
       return;
     }
     handleChangeProgress();
@@ -100,6 +99,7 @@ const QuestionList = (props) => {
         userAnswers: { selectedAnswers: filteredAnswers },
       },
     });
+    alert("Finished!");
   };
 
   return (
