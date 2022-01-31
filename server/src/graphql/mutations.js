@@ -7,29 +7,20 @@ import {
   GraphQLList,
 } from "graphql";
 const { auth } = require("../util");
+import { User, GlobalTopic, Topic, Question, Quiz, UserQuiz } from "../models";
 import {
-  User,
-  GlobalTopic,
-  Topic,
-  Question,
-  Quiz,
-  UserQuiz,
-  Post,
-  Comment,
-} from "../models";
-import {
-  InputPrivateQuestion,
-  InputQuestionDef,
   QuestionType,
   TopicType,
   GlobalTopicType,
   QuizType,
-  InputSelectedTopicsQuiz,
   UserQuizType,
-  InputUserAnswers,
-  PostType,
-  CommentType,
 } from "./types";
+import {
+  InputPrivateQuestion,
+  InputQuestionDef,
+  InputSelectedTopicsQuiz,
+  InputUserAnswers,
+} from "./inputTypes";
 
 const register = {
   type: GraphQLString,
@@ -440,19 +431,13 @@ const createUserQuiz = {
   type: UserQuizType,
   description: "Create a new user-quiz",
   args: {
-    title: { type: new GraphQLNonNull(GraphQLString) },
-    dsc: { type: GraphQLString },
     userId: { type: new GraphQLNonNull(GraphQLString) },
-    remitterId: { type: GraphQLString },
     quizId: { type: GraphQLString },
     userAnswers: { type: InputUserAnswers },
   },
   resolve(_, args, { verifiedUser }) {
     const userQuiz = new UserQuiz({
-      title: args.title,
-      dsc: args.dsc,
       userId: args.userId,
-      remitterId: args.remitterId,
       quizId: args.quizId,
       userAnswers: args.userAnswers,
     });
@@ -465,18 +450,11 @@ const updateUserQuiz = {
   description: "update a user-quiz",
   args: {
     id: { type: new GraphQLNonNull(GraphQLID) },
-    title: { type: new GraphQLNonNull(GraphQLString) },
-    dsc: { type: GraphQLString },
     userId: { type: new GraphQLNonNull(GraphQLString) },
-    remitterId: { type: GraphQLString },
-    quizId: { type: GraphQLString },
+    quizId: { type: new GraphQLNonNull(GraphQLString) },
     userAnswers: { type: InputUserAnswers },
   },
-  async resolve(
-    _,
-    { id, title, dsc, userId, remitterId, quizId, userAnswers },
-    { verifiedUser }
-  ) {
+  async resolve(_, { id, userId, quizId, userAnswers }, { verifiedUser }) {
     // if (!verifiedUser) throw new Error("UnAuthorized");
 
     const userQuizUpdated = await UserQuiz.findOneAndUpdate(
@@ -485,12 +463,9 @@ const updateUserQuiz = {
         // userId: verifiedUser._id,
       },
       {
-        title,
-        dsc,
         userId,
-        remitterId,
         quizId,
-        userAnswers,
+        $set: userAnswers,
       },
       {
         new: true,
@@ -525,145 +500,6 @@ const deleteUserQuiz = {
   },
 };
 
-//----------------------------------------------------------------
-//--------- Comments and Posts
-//----------------------------------------------------------------
-
-const createPost = {
-  type: PostType,
-  description: "create a new blog post",
-  args: {
-    title: { type: new GraphQLNonNull(GraphQLString) },
-    body: { type: new GraphQLNonNull(GraphQLString) },
-  },
-  async resolve(_, args /* { verifiedUser } */) {
-    /* if (!verifiedUser) throw new Error("You must be logged in to do that");
-
-    const userFound = await User.findById(verifiedUser._id);
-    if (!userFound) throw new Error("Unauthorized"); */
-
-    const post = new Post({
-      //   authorId: verifiedUser._id,
-      title: args.title,
-      body: args.body,
-    });
-
-    return post.save();
-  },
-};
-
-const updatePost = {
-  type: PostType,
-  description: "update a blog post",
-  args: {
-    id: { type: new GraphQLNonNull(GraphQLID) },
-    title: { type: new GraphQLNonNull(GraphQLString) },
-    body: { type: new GraphQLNonNull(GraphQLString) },
-  },
-  async resolve(_, { id, title, body }, { verifiedUser }) {
-    // if (!verifiedUser) throw new Error("Unauthorized");
-
-    const postUpdated = await Post.findOneAndUpdate(
-      { _id: id /* , authorId: verifiedUser._id */ },
-      { title, body },
-      {
-        new: true,
-        runValidators: true,
-      }
-    );
-
-    if (!postUpdated) throw new Error("No post for given id");
-
-    return postUpdated;
-  },
-};
-
-const deletePost = {
-  type: GraphQLString,
-  description: "Delete post",
-  args: {
-    postId: { type: new GraphQLNonNull(GraphQLID) },
-  },
-  async resolve(_, args, { verifiedUser }) {
-    const postDeleted = await Post.findOneAndDelete({
-      _id: args.postId,
-      //   authorId: verifiedUser._id,
-    });
-    if (!postDeleted)
-      throw new Error("No post with given ID Found for the author");
-
-    return "Post deleted";
-  },
-};
-
-const addComment = {
-  type: CommentType,
-  description: "Create a new comment for a blog post",
-  args: {
-    comment: { type: new GraphQLNonNull(GraphQLString) },
-    postId: { type: new GraphQLNonNull(GraphQLID) },
-  },
-  resolve(_, { postId, comment }, { verifiedUser }) {
-    const newComment = new Comment({
-      //   userId: verifiedUser._id,
-      postId,
-      comment,
-    });
-    return newComment.save();
-  },
-};
-
-const updateComment = {
-  type: CommentType,
-  description: "update a comment",
-  args: {
-    id: { type: new GraphQLNonNull(GraphQLID) },
-    comment: { type: new GraphQLNonNull(GraphQLString) },
-  },
-  async resolve(_, { id, comment }, { verifiedUser }) {
-    // if (!verifiedUser) throw new Error("UnAuthorized");
-
-    const commentUpdated = await Comment.findOneAndUpdate(
-      {
-        _id: id,
-        // userId: verifiedUser._id,
-      },
-      {
-        comment,
-      },
-      {
-        new: true,
-        runValidators: true,
-      }
-    );
-
-    if (!commentUpdated) throw new Error("No comment with the given ID");
-
-    return commentUpdated;
-  },
-};
-
-const deleteComment = {
-  type: GraphQLString,
-  description: "delete a comment",
-  args: {
-    id: { type: new GraphQLNonNull(GraphQLID) },
-  },
-  async resolve(_, { id }, { verifiedUser }) {
-    // if (!verifiedUser) throw new Error("Unauthorized");
-
-    const commentDelete = await Comment.findOneAndDelete({
-      _id: id,
-      //   userId: verifiedUser._id,
-    });
-
-    if (!commentDelete)
-      throw new Error("No comment with the given ID for the user");
-
-    return "Comment deleted";
-  },
-};
-
 module.exports = {
   register,
   login,
@@ -682,10 +518,4 @@ module.exports = {
   createUserQuiz,
   updateUserQuiz,
   deleteUserQuiz,
-  createPost,
-  addComment,
-  updatePost,
-  deletePost,
-  updateComment,
-  deleteComment,
 };

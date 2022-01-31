@@ -1,25 +1,13 @@
-import { GraphQLList, GraphQLNonNull, GraphQLID, GraphQLString } from "graphql";
+import { GraphQLList, GraphQLID } from "graphql";
 import {
-  UserLevelType,
   UserType,
   QuestionType,
   TopicType,
   GlobalTopicType,
   QuizType,
   UserQuizType,
-  PostType,
-  CommentType,
 } from "./types";
-import {
-  Post,
-  Comment,
-  User,
-  GlobalTopic,
-  Topic,
-  Question,
-  Quiz,
-  UserQuiz,
-} from "../models";
+import { User, GlobalTopic, Topic, Question, Quiz, UserQuiz } from "../models";
 
 const users = {
   type: new GraphQLList(UserType),
@@ -54,7 +42,7 @@ const globalTopic = {
 };
 
 const topics = {
-  type: new GraphQLList(GlobalTopicType),
+  type: new GraphQLList(TopicType),
   description: "Get the topics list",
   resolve: () => Topic.find(),
 };
@@ -67,7 +55,7 @@ const topic = {
 };
 
 const questions = {
-  type: new GraphQLList(GlobalTopicType),
+  type: new GraphQLList(QuestionType),
   description: "Get the question list",
   resolve: () => Question.find(),
 };
@@ -80,9 +68,9 @@ const question = {
 };
 
 const quizzes = {
-  type: new GraphQLList(GlobalTopicType),
+  type: new GraphQLList(QuizType),
   description: "Get the quizzes list",
-  resolve: () => Quiz.find(),
+  resolve: (_, {}) => Quiz.find(),
 };
 
 const quiz = {
@@ -93,7 +81,7 @@ const quiz = {
 };
 
 const userQuizzes = {
-  type: new GraphQLList(GlobalTopicType),
+  type: new GraphQLList(UserQuizType),
   description: "Get the user quizzes list",
   resolve: () => UserQuiz.find(),
 };
@@ -103,34 +91,6 @@ const userQuiz = {
   description: "retrieves a single user quiz",
   args: { id: { type: GraphQLID } },
   resolve: (_, { id }) => UserQuiz.findById(id),
-};
-
-const posts = {
-  type: new GraphQLList(PostType),
-  description: "retrieves a list of posts",
-  resolve: () => Post.find(),
-};
-
-const post = {
-  type: PostType,
-  description: "retrieves a single post",
-  args: { id: { type: GraphQLID } },
-  resolve: (_, { id }) => Post.findById(id),
-};
-
-const comments = {
-  type: new GraphQLList(CommentType),
-  description: "Retrieves list of commnets",
-  resolve: () => Comment.find(),
-};
-
-const comment = {
-  type: CommentType,
-  description: "Retrieves a single comment",
-  args: {
-    id: { type: new GraphQLNonNull(GraphQLID) },
-  },
-  resolve: (_, { id }) => Comment.findById(id),
 };
 
 module.exports = {
@@ -146,8 +106,4 @@ module.exports = {
   quiz,
   userQuizzes,
   userQuiz,
-  posts,
-  post,
-  comments,
-  comment,
 };

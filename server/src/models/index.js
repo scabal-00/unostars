@@ -5,6 +5,4 @@ module.exports = {
   GlobalTopic: require("./GlobalTopic"),
   Quiz: require("./Quiz"),
   UserQuiz: require("./UserQuiz"),
-  Post: require("./Post"),
-  Comment: require("./Comment"),
 };

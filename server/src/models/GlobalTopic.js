@@ -8,6 +8,7 @@ const globalTopicSchema = new Schema(
       required: true,
     },
     dsc: String,
+    photo: String,
     isActive: { type: Boolean, default: true },
     // topicsId: [String],
   },
