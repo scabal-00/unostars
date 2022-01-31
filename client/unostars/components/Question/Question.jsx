@@ -2,7 +2,7 @@ import { Paper, Grid, Typography, Button, Chip } from "@mui/material";
 import { styled } from "@mui/material/styles";
 
 const Question = (props) => {
-  console.log("Question props", props);
+  // console.log("Question props", props);
   return (
     <Container>
       <QuestionContainer>
@@ -17,7 +17,11 @@ const Question = (props) => {
           <Grid item xs={12} md={6} key={option.id}>
             <Button
               fullWidth
-              variant="outlined"
+              variant={
+                option.id === props?.selectedAnswers[props?.index]?.userAnswer
+                  ? "contained"
+                  : "outlined"
+              }
               size="large"
               startIcon={
                 <AnswerIndicator
@@ -27,6 +31,12 @@ const Question = (props) => {
                 />
               }
               sx={{ justifyContent: "flex-start", textTransform: "initial" }}
+              onClick={props.onSelectAnswer.bind(
+                null,
+                option.id,
+                props.question.id,
+                props.index
+              )}
             >
               {option?.dsc}
             </Button>

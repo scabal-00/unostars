@@ -1,4 +1,4 @@
-import { Fragment, useState } from "react";
+import { Fragment, useState, useEffect } from "react";
 
 import SwipeableViews from "react-swipeable-views";
 import { Paper, Grid, Typography, Fab, LinearProgress } from "@mui/material";
@@ -10,12 +10,21 @@ import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import Question from "./Question";
 
 const QuestionList = (props) => {
-  const numberOfQuestions = props.questions.length;
+  const { questions } = props;
+  const numberOfQuestions = questions.length;
+  const answersStateInit = Array(numberOfQuestions).fill(null);
 
   const [activeStep, setActiveStep] = useState(0);
-  const [progress, setProgress] = useState(10);
+  const [progress, setProgress] = useState(0);
+  const [answers, setAnswers] = useState([]);
 
-  console.log(props);
+  useEffect(() => {
+    if (answers.length === 0 && questions.length > 0) {
+      setAnswers(answersStateInit);
+    }
+  }, [questions]);
+
+  // console.log(props);
 
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -23,6 +32,37 @@ const QuestionList = (props) => {
 
   const handleBack = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
+  };
+
+  const handleSelectAnswer = (selectedAnswer, questionId, questionIndex) => {
+    const newAnswersArray = [...answers];
+    newAnswersArray[questionIndex] = {
+      questionId,
+      userAnswer: selectedAnswer,
+    };
+    setAnswers(newAnswersArray);
+    if (activeStep === numberOfQuestions - 1) {
+      alert("Finished!");
+      return;
+    }
+    handleChangeProgress();
+    handleNext();
+  };
+
+  const handleChangeProgress = () => {
+    let numberOfAnsweredAnswers = 0;
+    answers.forEach((answer) => {
+      if (answer !== null) {
+        ++numberOfAnsweredAnswers;
+      }
+    });
+    const currentProgress =
+      ((numberOfAnsweredAnswers + 1) * 100) / numberOfQuestions;
+    if (currentProgress > 100) {
+      setProgress(100);
+    } else {
+      setProgress(currentProgress);
+    }
   };
 
   return (
@@ -35,7 +75,7 @@ const QuestionList = (props) => {
       </TimeContainer>
       <SwipeableViews
         containerStyle={{
-          height: "calc(100vh)",
+          height: "100vh",
         }}
         axis="y"
         resistance
@@ -47,6 +87,9 @@ const QuestionList = (props) => {
             question={question}
             activeQuestionNumber={index + 1}
             numberOfQuestions={numberOfQuestions}
+            onSelectAnswer={handleSelectAnswer}
+            index={index}
+            selectedAnswers={answers}
           />
         ))}
       </SwipeableViews>
